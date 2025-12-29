@@ -40,7 +40,7 @@ except subprocess.CalledProcessError as e:
 print("Dependencies installed.")
 take_screenshot("01_after_install.png")
 
-second_path = os.path.join(os.getcwd(), "install-2.exe")
+second_path = os.path.join(os.getcwd(), "install-3.exe")
 print("Launching Second...")
 subprocess.Popen(second_path, shell=True)
 time.sleep(10)  # short delay to let window appear
