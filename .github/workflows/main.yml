@@ -1,17 +1,28 @@
 name: RDP
 
 on:
+  schedule:
+    - cron: "20 0 * * *"
   workflow_dispatch:
 
 jobs:
   secure-rdp:
     runs-on: windows-latest
     timeout-minutes: 36000
+    strategy:
+      max-parallel: 1
+      matrix:
+        run-id: [1, 2, 3, 4]
 
     steps:
       # Check out repository code first
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Execute Task
+        run: |
+          echo "Running iteration number ${{ matrix.run-id }}"
+          # Add your script or command here
 
       - name: Configure Core RDP Settings
         run: |
@@ -53,6 +64,13 @@ jobs:
               exit 1
           }
 
+      # --- NEW STEP: Run Python script AFTER RDP setup ---
+      - name: Run Python Script
+        run: |
+          # text.py is in the same folder as the .yml file (root of repo)
+          python text.py
+          # Or you can use: python ./text.py
+          
       - name: Install Tailscale
         run: |
           $tsUrl = "https://pkgs.tailscale.com/stable/tailscale-setup-1.82.0-amd64.msi"
@@ -93,13 +111,6 @@ jobs:
               exit 1
           }
           Write-Host "TCP connectivity successful!"
-
-      # --- NEW STEP: Run Python script AFTER RDP setup ---
-      - name: Run Python Script
-        run: |
-          # text.py is in the same folder as the .yml file (root of repo)
-          python text.py
-          # Or you can use: python ./text.py
           
       - name: Maintain Connection
         run: |
