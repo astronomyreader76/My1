@@ -3,7 +3,7 @@ import sys
 import time
 import os
 
-# --- 1. DEPENDENCY CHECK FIRST ---
+# --- 1. DEPENDENCY CHECK FIRST ----
 packages = ['pywinauto', 'pywin32', 'comtypes', 'pyautogui', 'Pillow']
 print("Checking dependencies...")
 try:
